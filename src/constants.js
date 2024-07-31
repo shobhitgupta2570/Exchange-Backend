@@ -1,1 +1,1 @@
-export const DB_NAME = "socialchat"
+export const DB_NAME = "Exchange"
