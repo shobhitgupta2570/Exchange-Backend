@@ -1,5 +1,5 @@
 {
-  "name": "Shobhit Gupta",
+  "name": "exchange",
   "version": "1.0.0",
   "description": "a backend ",
   "type": "module",
@@ -11,7 +11,7 @@
     "javascript",
     "backend"
   ],
-  "author": "Shobhit Gupta",
+  "author": "Transvue Solution Pvt Ltd",
   "license": "ISC",
   "devDependencies": {
     "@types/express": "^4.17.1",
@@ -25,8 +25,8 @@
     "cloudinary": "^1.41.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
-    "dotenv": "^16.3.1",
-    "express": "^4.17.1",
+    "dotenv": "^16.4.5",
+    "express": "^4.18.2",
     "express-session": "^1.18.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.0.0",

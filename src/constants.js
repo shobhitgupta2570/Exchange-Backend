@@ -1,1 +1,1 @@
-export const DB_NAME = "TwiExchange"
+export const DB_NAME = "Exchange"
