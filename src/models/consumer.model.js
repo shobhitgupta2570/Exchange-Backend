@@ -1,6 +1,4 @@
-import mongoose, {Schema} from "mongoose";
-import jwt from "jsonwebtoken"
-import bcrypt from "bcrypt"
+import mongoose, { Schema } from "mongoose";
 
 const consumerSchema = new Schema(
     {
@@ -9,13 +7,13 @@ const consumerSchema = new Schema(
             required: [true, "Email is required"],
             unique: true,
             lowercase: true,
-            trim: true, 
+            trim: true,
         },
         type: {
             type: String,
             enum: ["consumer", "transporter"],
             required: true
-         },
+        },
         phoneNumber: {
             type: Number,
             required: [true, "Phone Number is required"],
@@ -23,21 +21,37 @@ const consumerSchema = new Schema(
         },
         gstin: {
             type: String,
-            required: true,
+            validate: {
+                validator: function (value) {
+                    if (this.type === 'consumer') {
+                        return value && value.length > 0;
+                    }
+                    return true;
+                },
+                message: "GSTIN is required for consumers"
+            },
         },
-        pan:{
+        pan: {
+            type: String,
+            validate: {
+                validator: function (value) {
+                    if (this.type === 'transporter') {
+                        return value && value.length > 0;
+                    }
+                    return true;
+                },
+                message: "PAN is required for transporters"
+            },
+        },
+        companyName: {
             type: String,
             required: true
         },
-        companyName:{
+        website: {
             type: String,
             required: true
         },
-        website:{
-            type: String,
-            required: true
-        },
-       
+
     },
     {
         timestamps: true
@@ -45,31 +59,4 @@ const consumerSchema = new Schema(
 )
 
 
-consumerSchema.methods.generateAccessToken = function(){
-    return jwt.sign(
-        {
-            _id: this._id,
-            email: this.email,
-            phoneNumber: this.fullName
-        },
-        process.env.ACCESS_TOKEN_SECRET,
-        {
-            expiresIn: process.env.ACCESS_TOKEN_EXPIRY
-        }
-    )
-}
-consumerSchema.methods.generateRefreshToken = function(){
-    return jwt.sign(
-        {
-            _id: this._id,
-            
-        },
-        process.env.REFRESH_TOKEN_SECRET,
-        {
-            expiresIn: process.env.REFRESH_TOKEN_EXPIRY
-        }
-    )
-}
-
-
-export const Consumer = mongoose.model("Consumer", consumerSchema)
+export const Consumer = mongoose.model("Consumer", consumerSchema);
