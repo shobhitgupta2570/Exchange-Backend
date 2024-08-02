@@ -70,6 +70,39 @@ const registerConsumer = asyncHandler( async (req, res) => {
 
 } )
 
+const loginConsumer = asyncHandler(async (req,res)=>{
+    try {
+        const otp = otpGenerator.generate(4, { upperCaseAlphabets: false, lowerCaseAlphabets: false, specialChars: false });
+
+        const cDate = new Date();
+        const phoneNumber = req.body.phoneNumber;
+        const existedUser = await Consumer.findOne({ phoneNumber })
+
+    if (!existedUser) {
+        throw new ApiError(409, " phoneNumber does not exist")
+    }
+        // sent otp on mobile number
+        await axios.get('https://www.fast2sms.com/dev/bulkV2', {
+            params: {
+                authorization: process.env.FAST2SMS_API_KEY,
+                variables_values: otp,
+                route: 'otp',
+                numbers: phoneNumber
+            }
+        });
+
+        // console.log('sent otp')
+        return res.status(201).json(
+            new ApiResponse(201, {otp}, "OTP sent successfully!"));
+    } catch (error) {
+        console.error('Error sending OTP:', error);
+        res.status(400).json(
+            // { success: false, message: 'Failed to send OTP.' }
+            new ApiResponse(400, {error}, "Failed to send OTP")
+        );
+    }
+})
+
 const sendConsumerOtp = asyncHandler(async (req, res) => {
     try {
         const otp = otpGenerator.generate(4, { upperCaseAlphabets: false, lowerCaseAlphabets: false, specialChars: false });
@@ -103,6 +136,8 @@ const sendConsumerOtp = asyncHandler(async (req, res) => {
     }
 })
 
+
+
 // const verifyConsumerOtp = async (req, res) => {
 //     try {
 
@@ -133,5 +168,5 @@ const sendConsumerOtp = asyncHandler(async (req, res) => {
 // }
 
 export {
-    registerConsumer, sendConsumerOtp, 
+    registerConsumer, sendConsumerOtp, loginConsumer
 }
