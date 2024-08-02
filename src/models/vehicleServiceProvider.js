@@ -10,7 +10,7 @@ const vehicleServiceProviderSchema = new Schema(
         },
         type: {
             type: String,
-            enum: ["owner", "driver", "broker"],
+            enum: ["owner", "broker"],
             required: true
         },
         phoneNumber: {
