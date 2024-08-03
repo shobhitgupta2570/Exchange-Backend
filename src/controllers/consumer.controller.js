@@ -105,6 +105,8 @@ const sendOtpOnPhone = asyncHandler(async (req, res) => {
     }
 })
 
+
+
 // const verifyConsumerOtp = async (req, res) => {
 //     try {
 
