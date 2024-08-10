@@ -1,45 +1,18 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js"
 import { Consumer } from "../models/consumer.model.js"
-import { uploadOnCloudinary } from "../utils/cloudinary.js"
 import { ApiResponse } from "../utils/ApiResponse.js";
-import jwt from "jsonwebtoken"
 import mongoose from "mongoose";
 import axios from "axios";
 import otpGenerator from 'otp-generator';
 import { subject } from '../constants.js';
 import { sendEmail } from '../utils/sendEmail.js'
 
-// const generateAccessAndRefereshTokens = async(userId) =>{
-//     try {
-//         const user = await User.findById(userId)
-//         const accessToken = user.generateAccessToken()
-//         const refreshToken = user.generateRefreshToken()
 
-//         user.refreshToken = refreshToken
-//         await user.save({ validateBeforeSave: false })
-
-//         return {accessToken, refreshToken}
-
-
-//     } catch (error) {
-//         throw new ApiError(500, "Something went wrong while generating referesh and access token")
-//     }
-// }
 
 const registerConsumer = asyncHandler(async (req, res) => {
-    // get user details from frontend
-    // validation - not empty
-    // check if user already exists: phoneNumber, email
-    // check for images, check for profileImage
-    // upload them to cloudinary, profileImage
-    // create user object - create entry in db
-    // remove password and refresh token field from response
-    // check for user creation
-    // return res
 
-
-    const { phoneNumber, email, gstin, type, companyName, website, pan } = req.body
+   const { phoneNumber, email, gstin, type, companyName, website, pan } = req.body
     //console.log("email: ", email);
 
     if (
@@ -58,9 +31,7 @@ const registerConsumer = asyncHandler(async (req, res) => {
         phoneNumber, email, gstin, type, companyName, website, pan
     })
 
-    const createdConsumer = await Consumer.findById(consumer._id).select(
-        "-refreshToken"
-    )
+    const createdConsumer = await Consumer.findById(consumer._id)
 
     if (!createdConsumer) {
         throw new ApiError(500, "Something went wrong while registering the user")

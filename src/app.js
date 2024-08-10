@@ -24,7 +24,6 @@ import consumerRouter from './routes/consumer.routes.js'
 //routes declaration
 
 app.use("/api/v1/consumer", consumerRouter)
-// http://localhost:8000/api/v1/users/register
 // http://localhost:8000/api/v1/consumer/signup
 
 export { app }
